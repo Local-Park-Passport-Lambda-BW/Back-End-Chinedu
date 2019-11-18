@@ -40,47 +40,28 @@ describe('park model', () => {
             const newPark2 = await Park.addPark(parkDetails2)
 
             expect(newPark)
-                .toEqual({
-                name: 'Pleasure Park',
-                city: 'PHC',
-                state: 'Rivers',
-                country: 'Nigeria',
-                description: 'A fun place to be'
-            })
+                .toEqual({...parkDetails, id: 1 })
             
             expect(newPark2)
-                .toEqual({
-                name: 'Pleasure',
-                city: 'PHC',
-                state: 'Rivers',
-                country: 'Nigeria',
-                description: 'fun place'
-            })
+                .toEqual({...parkDetails2, id: 2 })
        })
     })
 
     describe('find park by name and city', () => {
         it('returns the park', async () => {
             const parkDetails = {
-                name: 'Pleasure Park',
+                name: 'Pleasure',
                 city: 'PHC',
                 state: 'Rivers',
                 country: 'Nigeria',
                 description: 'A fun place to be'
             }
-            const parkDetails2 = {
-                name: 'Pleasure',
-                city: 'PHC',
-                state: 'Rivers',
-                country: 'Nigeria',
-                description: 'fun place'
-            }
-            const newPark = await Park.addPark(parkDetails)
-            const newPark2 = await Park.addPark(parkDetails2)
+            const [id] = await db('park').insert(parkDetails);
+            const addedPark = await db('park').where({ id }).first();
 
             const foundPark = await Park.findByNameAndCity('Pleasure', 'PHC')
 
-            expect(foundPark).toEqual(parkDetails2)
+            expect(foundPark).toEqual(addedPark)
         })
     })
 })

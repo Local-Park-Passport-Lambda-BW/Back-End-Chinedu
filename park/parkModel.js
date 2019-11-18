@@ -11,7 +11,7 @@ function addPark(parkDetails) {
         .then(arrayReturned => {
             const id = arrayReturned[0]
             return db('park')
-                .where({rowid:id})
+                .where({ id })
                 .first()
         })
 }
