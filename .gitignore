@@ -80,3 +80,5 @@ typings/
 .dynamodb/
 
 /notes.md
+lets.js
+lets2.js

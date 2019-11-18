@@ -2,6 +2,7 @@ const db = require('../database/db-config')
 
 module.exports = {
     addPark,
+    findByNameAndCity,
 }
 
 function addPark(parkDetails) {
@@ -13,4 +14,10 @@ function addPark(parkDetails) {
                 .where({rowid:id})
                 .first()
         })
+}
+
+function findByNameAndCity(name, city) {
+    return db('park')
+        .where({ name, city })
+        .first()
 }

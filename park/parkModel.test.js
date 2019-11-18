@@ -58,4 +58,29 @@ describe('park model', () => {
             })
        })
     })
+
+    describe('find park by name and city', () => {
+        it('returns the park', async () => {
+            const parkDetails = {
+                name: 'Pleasure Park',
+                city: 'PHC',
+                state: 'Rivers',
+                country: 'Nigeria',
+                description: 'A fun place to be'
+            }
+            const parkDetails2 = {
+                name: 'Pleasure',
+                city: 'PHC',
+                state: 'Rivers',
+                country: 'Nigeria',
+                description: 'fun place'
+            }
+            const newPark = await Park.addPark(parkDetails)
+            const newPark2 = await Park.addPark(parkDetails2)
+
+            const foundPark = await Park.findByNameAndCity('Pleasure', 'PHC')
+
+            expect(foundPark).toEqual(parkDetails2)
+        })
+    })
 })
