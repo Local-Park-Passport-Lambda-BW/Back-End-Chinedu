@@ -11,4 +11,8 @@ server.use(cors());
 server.use(express.json());
 server.use('/api/parks', parkRouter)
 
+server.get('/', (req, res) => {
+    res.json("Heloo phc")
+})
+
 module.exports = server
