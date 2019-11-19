@@ -2,6 +2,21 @@ const db = require('./userModel')
 
 module.exports = {
     validateUserdetails,
+    validateParkDetails,
+}
+
+function validateParkDetails(req, res, next) {
+    const { name, city, country, description } = req.body
+    if (name && city && country && description) {
+        next()
+    }
+    else {
+        res
+            .status(400)
+            .json({
+                message: "Incomplete details"
+            })
+    }
 }
 
 function validateUserdetails(req, res, next) {
