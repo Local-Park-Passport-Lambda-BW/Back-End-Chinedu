@@ -1,11 +1,35 @@
 const express = require('express')
-const db = require('./parkModel')
+const bcrypt = require('bcryptjs')
+const dbPark = require('./parkModel')
+const dbUser = require('../user/userModel')
+const checkToken = require('../auth/checkToken')
+const generateToken = require('../auth/generateToken')
+const { validateUserdetails } = require('../user/userMiddleware')
 
 const router = express.Router()
 
+router.post('/register', validateUserdetails, (req, res, next) => {
+    let userDetails = req.body
+    const hash = bcrypt.hashSync(userDetails.password, 10)
+    userDetails = { ...userDetails, password: hash }
+    dbUser.addUser(userDetails)
+        .then(newUser => {
+            res
+                .status(201)
+                .json(newUser)
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                    message: "Failure to create new user",
+                    error: error
+            })
+        })
+})
 
 router.get('/', (req, res) => {
-    db.findAllParks()
+    dbPark.findAllParks()
         .then(parks => {
             if (parks.length) {
                 res
@@ -33,7 +57,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const parkDetails = req.body;
-    db.addPark(parkDetails)
+    dbPark.addPark(parkDetails)
         .then(newPark => {
             res
                 .status(201)
