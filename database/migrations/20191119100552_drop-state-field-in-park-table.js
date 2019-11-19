@@ -7,6 +7,6 @@ exports.up = function(knex) {
 
 exports.down = function (knex) {
     return knex.schema.table('park', tbl => {
-        tbl.string('state').notNullable();
+        tbl.string('state');
     })
 };
