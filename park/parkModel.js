@@ -3,6 +3,11 @@ const db = require('../database/db-config')
 module.exports = {
     addPark,
     findByNameAndCity,
+    findAllParks,
+}
+
+function findAllParks() {
+    return db('park')
 }
 
 function addPark(parkDetails) {
