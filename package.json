@@ -8,6 +8,10 @@
     "start": "node index.js",
     "test": "cross-env DB_ENV=testing jest --watchAll"
   },
+  "engines": {
+    "node": "12.13.0",
+    "npm": "6.12.0"
+  },
   "jest": {
     "testEnvironment": "node"
   },
