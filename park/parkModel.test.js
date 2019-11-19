@@ -4,14 +4,13 @@ const db = require('../database/db-config')
 describe('park model', () => {
     beforeEach(async () => {
         await db('park').truncate();
-    })
+    })    
 
     describe('add a park', () => {
         it('adds a park', async () => {
             const parkDetails = {
                 name: 'Pleasure Park',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'A fun place to be'
             }
@@ -25,14 +24,12 @@ describe('park model', () => {
             const parkDetails = {
                 name: 'Pleasure Park',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'A fun place to be'
             }
             const parkDetails2 = {
                 name: 'Pleasure',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'fun place'
             }
@@ -52,7 +49,6 @@ describe('park model', () => {
             const parkDetails = {
                 name: 'Pleasure',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'A fun place to be'
             }
@@ -62,6 +58,22 @@ describe('park model', () => {
             const foundPark = await Park.findByNameAndCity('Pleasure', 'PHC')
 
             expect(foundPark).toEqual(addedPark)
+        })
+    })
+
+    describe('all parks', () => {
+        it('returns all parks', async () => {
+            const firstPark = {
+                name: 'Pleasure Park',
+                city: 'PHC',
+                country: 'Nigeria',
+                description: 'A fun place to be'
+            }
+            await db('park').insert(firstPark)
+            const parks = await Park.findAllParks();
+
+            expect(parks).toContainEqual({ ...firstPark, id: 1 })
+            expect(parks).toHaveLength(1)
         })
     })
 })
