@@ -1,9 +1,9 @@
 Endpoints
-registration: POST "http://localhost:4500/api/parks/register"
-login: POST "http://localhost:4500/api/parks/login"
-get all parks: GET "http://localhost:4500/api/parks"
-add a park: POST "http://localhost:4500/api/parks/register"
-registration: "http://localhost:4500/api/parks/register"
+1. registration: POST "http://localhost:4500/api/parks/register"
+2. login: POST "http://localhost:4500/api/parks/login"
+3. get all parks: GET "http://localhost:4500/api/parks"
+4. add a park: POST "http://localhost:4500/api/parks/register"
+5. registration: "http://localhost:4500/api/parks/register"
 
 On new clone/download
 1. npm install
