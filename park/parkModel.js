@@ -12,7 +12,7 @@ function findAllParks() {
 
 function addPark(parkDetails) {
     return db('park')
-        .insert(parkDetails)
+        .insert(parkDetails, 'id')
         .then(arrayReturned => {
             const id = arrayReturned[0]
             return db('park')

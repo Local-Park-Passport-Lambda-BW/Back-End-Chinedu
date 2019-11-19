@@ -7,7 +7,7 @@ module.exports = {
 
 function addUser(userDetails) {
     return db('user')
-        .insert(userDetails)
+        .insert(userDetails, 'id')
         .then(idArray => {
             return db('user')
                 .where({ id: idArray[0] })
