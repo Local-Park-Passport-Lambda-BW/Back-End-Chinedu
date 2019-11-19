@@ -4,7 +4,7 @@ const dbPark = require('./parkModel')
 const dbUser = require('../user/userModel')
 const checkToken = require('../auth/checkToken')
 const generateToken = require('../auth/generateToken')
-const { validateUserdetails } = require('../user/userMiddleware')
+const { validateUserdetails } = require('../middleware')
 
 const router = express.Router()
 
@@ -80,7 +80,7 @@ router.get('/', (req, res) => {
 })
 
 
-router.post('/', (req, res) => {
+router.post('/', checkToken, (req, res) => {
     const parkDetails = req.body;
     dbPark.addPark(parkDetails)
         .then(newPark => {
