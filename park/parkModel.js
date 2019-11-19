@@ -24,15 +24,10 @@ function addPark(parkDetails) {
         })
 }
 
-function updatePark(id, parkDetails) {
-    return db('park')
-        .where({ id })
-        .update(parkDetails, 'id')
-        .then(response => {
-            return db('park')
-                .where({ id })
-                .first()
-        })
+async function updatePark(id, parkDetails) {
+    await db('park').where({ id }).update(parkDetails)
+    const updatedPark = await db('park').where({ id }).first()
+    return updatedPark
 }
 
 function findByNameAndCity(name, city) {

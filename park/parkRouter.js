@@ -4,7 +4,11 @@ const dbPark = require('./parkModel')
 const dbUser = require('../user/userModel')
 const checkToken = require('../auth/checkToken')
 const generateToken = require('../auth/generateToken')
-const { validateUserdetails, validateParkDetails } = require('../middleware')
+const {
+    validateUserdetails,
+    validateParkDetails,
+    validatePark
+} = require('../middleware')
 
 const router = express.Router()
 
@@ -51,6 +55,53 @@ router.post('/login', validateUserdetails, (req, res) => {
             }
         })
         .catch()
+})
+
+router.get('/:id', validatePark, (req, res) => {
+    res
+        .status(200)
+        .json(req.park)
+})
+
+router.put('/:id', validatePark, validateParkDetails, (req, res) => {
+    const { id } = req.params
+    const parkDetails = req.body
+    dbPark.updatePark(id, parkDetails)
+        .then(updatedPark => {
+            res
+                .status(200)
+                .json(updatedPark)
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                    message: "Failure updating park details",
+                    error: error
+                })
+        })
+})
+
+router.delete('/:id', validatePark, checkToken, (req, res) => {
+    const park = req.park
+
+    dbPark.removePark(park.id)
+        .then(quantityDeleted => {
+            res
+                .status(200)
+                .json({
+                    message: `${park.name} has been removed`,
+                    quantityDeleted: quantityDeleted
+                })
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                    message: "Failure to delete park",
+                    error: error
+                })
+        })
 })
 
 router.get('/', (req, res) => {
