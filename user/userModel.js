@@ -1,4 +1,4 @@
-const db = require('../database/db-Config')
+const db = require('../database/db-config')
 
 module.exports = {
     addUser,
