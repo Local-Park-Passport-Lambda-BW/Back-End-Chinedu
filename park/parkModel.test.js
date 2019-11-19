@@ -11,7 +11,6 @@ describe('park model', () => {
             const parkDetails = {
                 name: 'Pleasure Park',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'A fun place to be'
             }
@@ -25,14 +24,12 @@ describe('park model', () => {
             const parkDetails = {
                 name: 'Pleasure Park',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'A fun place to be'
             }
             const parkDetails2 = {
                 name: 'Pleasure',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'fun place'
             }
@@ -52,7 +49,6 @@ describe('park model', () => {
             const parkDetails = {
                 name: 'Pleasure',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'A fun place to be'
             }
@@ -70,7 +66,6 @@ describe('park model', () => {
             const firstPark = {
                 name: 'Pleasure Park',
                 city: 'PHC',
-                state: 'Rivers',
                 country: 'Nigeria',
                 description: 'A fun place to be'
             }
