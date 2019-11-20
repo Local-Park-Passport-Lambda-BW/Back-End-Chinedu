@@ -1,56 +1,58 @@
 const express = require('express')
-const bcrypt = require('bcryptjs')
-const dbPark = require('./parkModel')
-const dbUser = require('../user/userModel')
+const dbPark = require('../park/parkModel')
 const checkToken = require('../auth/checkToken')
-const generateToken = require('../auth/generateToken')
-const { validateUserdetails, validateParkDetails } = require('../middleware')
+const {
+    validateParkDetails,
+    validatePark
+} = require('../middleware')
 
 const router = express.Router()
 
-router.post('/register', validateUserdetails, (req, res) => {
-    let userDetails = req.body
-    const hash = bcrypt.hashSync(userDetails.password, 10)
-    userDetails = { ...userDetails, password: hash }
-    dbUser.addUser(userDetails)
-        .then(newUser => {
+router.get('/:id', validatePark, (req, res) => {
+    res
+        .status(200)
+        .json(req.park)
+})
+
+router.put('/:id', validatePark, validateParkDetails, checkToken, (req, res) => {
+    const { id } = req.params
+    const parkDetails = req.body
+    dbPark.updatePark(id, parkDetails)
+        .then(updatedPark => {
             res
-                .status(201)
-                .json(newUser)
+                .status(200)
+                .json(updatedPark)
         })
         .catch(error => {
             res
                 .status(500)
                 .json({
-                    message: "Failure to create new user",
+                    message: "Failure updating park details",
                     error: error
-            })
+                })
         })
 })
 
-router.post('/login', validateUserdetails, (req, res) => {
-    const loginName = req.body.username || req.body.email
-    const password = req.body.password
-    dbUser.findByUsernameOrEmail(loginName)
-        .then(user => {
-            if (user && bcrypt.compareSync(password, user.password)) {
-                const token = generateToken(user);
-                res
-                    .status(200)
-                    .json({
-                        message: "Welcome " + user.name,
-                        token: token
-                    })
-            }
-            else {
-                res
-                    .status(401)
-                    .json({
-                        message: "Invalid credentials"
-                    })
-            }
+router.delete('/:id', validatePark, checkToken, (req, res) => {
+    const park = req.park
+
+    dbPark.removePark(park.id)
+        .then(quantityDeleted => {
+            res
+                .status(200)
+                .json({
+                    message: `${park.name} has been removed`,
+                    quantityDeleted: quantityDeleted
+                })
         })
-        .catch()
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                    message: "Failure to delete park",
+                    error: error
+                })
+        })
 })
 
 router.get('/', (req, res) => {
