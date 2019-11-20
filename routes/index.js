@@ -9,4 +9,9 @@ router.use('/parks', parkRouter)
 router.use('/users', userRouter)
 router.use('/facilities', facilityRouter)
 
+
+router.get('/', (req, res) => {
+    res.json("Heloo park people")
+})
+
 module.exports = router
