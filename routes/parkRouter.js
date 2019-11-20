@@ -14,7 +14,7 @@ router.get('/:id', validatePark, (req, res) => {
         .json(req.park)
 })
 
-router.put('/:id', validatePark, validateParkDetails, (req, res) => {
+router.put('/:id', validatePark, validateParkDetails, checkToken, (req, res) => {
     const { id } = req.params
     const parkDetails = req.body
     dbPark.updatePark(id, parkDetails)
