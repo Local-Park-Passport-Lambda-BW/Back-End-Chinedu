@@ -1,6 +1,6 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
-const dbPark = require('./parkModel')
+const dbPark = require('../park/parkModel')
 const dbUser = require('../user/userModel')
 const checkToken = require('../auth/checkToken')
 const generateToken = require('../auth/generateToken')
