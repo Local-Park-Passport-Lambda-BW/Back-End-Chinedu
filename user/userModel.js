@@ -10,8 +10,9 @@ module.exports = {
 
 function findById(id) {
     return db('user')
-        .where({ id })
-        .first()
+                .where({ id })
+                .select('id', 'username', 'name', 'email')
+                .first()
 }
 
 function removeUser(id) {
