@@ -1,10 +1,39 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
-const { validateUserdetails } = require('../middleware')
+const { validateUserdetails, validateUser } = require('../middleware')
 const dbUser = require('../user/userModel')
 const generateToken = require('../auth/generateToken')
+const checkToken = require('../auth/checkToken')
 
 const router = express.Router()
+
+router.get('/:id', validateUser, (req, res) => {
+    res
+        .status(200)
+        .json(req.user)
+})
+
+router.delete('/:id', validateUser, (req, res) => {
+    const user = req.user
+
+    dbUser.removeUser(user.id)
+        .then(quantityDeleted => {
+            res
+                .status(200)
+                .json({
+                    message: `${user.name} has been removed`,
+                    quantityDeleted: quantityDeleted
+                })
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                    message: "Failure to delete user",
+                    error: error
+                })
+        })
+})
 
 router.post('/register', validateUserdetails, (req, res) => {
     let userDetails = req.body
