@@ -1,11 +1,51 @@
 const parkDb = require('../park/parkModel')
 const userDb = require('../user/userModel')
+const facilityDb = require('../facility/facilityModel')
 
 module.exports = {
     validateUserdetails,
     validateParkDetails,
     validatePark,
-    validateUser
+    validateUser,
+    validateFacility,
+    validateFacilityDetails
+}
+
+function validateFacilityDetails(req, res, next) {
+    const { name, description } = req.body
+    if (!Object.keys(req.body).length) {
+        res
+            .status(400)
+            .json({
+                message: "Missing facility details"
+            })
+    }
+    else if (name && description) {
+        next()
+    }
+    else {
+        res
+            .status(400)
+            .json({
+                message: "Incomplete details"
+            })
+    }
+}
+
+async function validateFacility(req, res, next) {
+    const { id } = req.params
+    const facility = await facilityDb.findById(id)
+    if (facility) {
+        req.facility = facility
+        next()
+    }
+    else {
+        res
+            .status(404)
+            .json({
+                message: "There is no facility with id " + id
+            })
+    }
 }
 
 async function validatePark(req, res, next) {
