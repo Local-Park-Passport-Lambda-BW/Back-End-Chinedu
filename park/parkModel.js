@@ -7,10 +7,38 @@ module.exports = {
     findById,
     removePark,
     updatePark,
+    addFacilityToPark,
+    findParkFacility,
+}
+
+async function addFacilityToPark(facility) {
+    const [rowId] = await db('park_facilty').insert(facility, 'park_id')
+    return rowId
+}
+
+function findParkFacility(id) {
+    return db('park as p')
+        .leftJoin('park_facility as pf', 'pf.park_id', 'p.id')
+        .leftJoin('facility as f', 'f.id', 'pf.facility_id')
+        .select('f.name', 'f.description').where('p.id', id)
 }
 
 function findAllParks() {
-    return db('park')
+    return db("park as p")
+        .leftJoin(
+            "rating as r",
+            "p.id",
+            "r.park_id"
+        )
+        .select(
+            "p.id",
+            "p.name",
+            "p.description",
+            "p.city",
+            "p.country"
+        )
+        .avg("r.rating as average_rating")
+        .groupBy("p.name");
 }
 
 function addPark(parkDetails) {
@@ -37,9 +65,18 @@ function findByNameAndCity(name, city) {
 }
 
 function findById(id) {
-    return db('park')
-        .where({ id })
-        .first()
+    return db('park as p')
+        .leftJoin('rating as r', 'r.park_id', 'p.id')
+        .avg('r.rating as average_rating')
+        .select(
+        "p.id",
+        "p.name as park_name",
+        "p.city",
+        "p.country",
+        "p.description as park_description"
+        )
+        .where("p.id", id)
+        .first();
 }
 
 function removePark(id) {
