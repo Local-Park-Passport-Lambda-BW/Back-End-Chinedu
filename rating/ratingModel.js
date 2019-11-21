@@ -21,7 +21,16 @@ async function addRating(rating) {
 }
 
 function findRatingById(id) {
-    return db("rating")
-        .where({ id })
+    return db("rating as r")
+        .join('park as p', 'p.id', 'r.park_id')
+        .join('user as u', 'u.id', 'r.user_id')
+        .select(
+            'r.id',
+            'r.rating',
+            'r.comment',
+            'p.name as park',
+            'u.username as user'
+        )
+        .where('r.id', id)
         .first();
 }
