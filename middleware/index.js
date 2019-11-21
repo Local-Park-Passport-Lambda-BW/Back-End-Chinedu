@@ -52,7 +52,9 @@ async function validatePark(req, res, next) {
     const { id } = req.params
     const park = await parkDb.findById(id)
     if (park) {
+        const facilities = await parkDb.findParkFacility(id)
         req.park = park
+        req.facilities = facilities
         next()
     }
     else {
