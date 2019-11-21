@@ -9,7 +9,28 @@ const {
 
 const router = express.Router()
 
-router.get('/:id/ratings', checkToken, (req, res) => {
+router.post('/:id/facilities', checkToken, (req, res) => {
+    const facilityDetails = {
+        park_id: req.params.id,
+        facility_id: req.body.facility_id
+    }
+    dbPark.addFacilityToPark(facilityDetails)
+        .then(park => {
+            res
+                .status(201)
+                .json(park)
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                    message: "Failure adding the facility to the park",
+                    error: error
+                })
+        })
+})
+
+router.post('/:id/ratings', checkToken, (req, res) => {
     const { subject: user_id } = req.decodedToken
     const park_id = req.params.id
     const { rating, comment } = req.body;
