@@ -12,8 +12,9 @@ module.exports = {
 }
 
 async function addFacilityToPark(facility) {
-    const [rowId] = await db('park_facilty').insert(facility, 'park_id')
-    return rowId
+    await db('park_facilty').insert(facility, 'park_id')
+    const park = await db('park').where('id', facility.park_id)
+    return park
 }
 
 function findParkFacility(id) {
