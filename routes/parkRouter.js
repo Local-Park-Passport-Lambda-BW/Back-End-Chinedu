@@ -9,9 +9,14 @@ const {
 const router = express.Router()
 
 router.get('/:id', validatePark, (req, res) => {
+    const park = req.park
+    const facilities = req.facilities
     res
         .status(200)
-        .json(req.park)
+        .json({
+            park,
+            facilities
+        })
 })
 
 router.put('/:id', validatePark, validateParkDetails, checkToken, (req, res) => {
