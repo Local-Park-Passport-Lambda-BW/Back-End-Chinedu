@@ -58,7 +58,7 @@ router.delete('/:id', checkToken, validateFacility, (req, res) => {
 router.get('/', checkToken, (req, res) => {
     db.findAllFacilities()
         .then(facilities => {
-            if (parks.length) {
+            if (facilities.length) {
                 res
                     .status(200)
                     .json(facilities)               
