@@ -1,5 +1,6 @@
 const express = require('express')
 const dbPark = require('../park/parkModel')
+const dbRating = require('../rating/ratingModel')
 const checkToken = require('../auth/checkToken')
 const {
     validateParkDetails,
@@ -7,6 +8,27 @@ const {
 } = require('../middleware')
 
 const router = express.Router()
+
+router.get('/:id/ratings', checkToken, (req, res) => {
+    const { subject: user_id } = req.decodedToken
+    const park_id = req.params.id
+    const { rating, comment } = req.body;
+    const newRating = { rating, comment, park_id, user_id };
+    dbRating.addRating(newRating)
+        .then(savedRating => {
+            res
+                .status(201)
+                .json(savedRating);
+            })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                message: "Failure adding the rating",
+                error: error
+            });
+        });
+})
 
 router.get('/:id', validatePark, (req, res) => {
     const park = req.park
