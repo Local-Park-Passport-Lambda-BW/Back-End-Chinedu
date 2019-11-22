@@ -1,6 +1,6 @@
-const parkDb = require('../park/parkModel')
-const userDb = require('../user/userModel')
-const facilityDb = require('../facility/facilityModel')
+const parkDb = require('../models/parkModel')
+const userDb = require('../models/userModel')
+const facilityDb = require('../models/facilityModel')
 
 module.exports = {
     validateUserdetails,

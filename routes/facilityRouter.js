@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require('../facility/facilityModel')
+const db = require('../models/facilityModel')
 const checkToken = require('../auth/checkToken')
 const {
     validateFacility,

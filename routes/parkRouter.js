@@ -1,6 +1,6 @@
 const express = require('express')
-const dbPark = require('../park/parkModel')
-const dbRating = require('../rating/ratingModel')
+const dbPark = require('../models/parkModel')
+const dbRating = require('../models/ratingModel')
 const checkToken = require('../auth/checkToken')
 const {
     validateParkDetails,
