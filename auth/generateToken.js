@@ -10,7 +10,7 @@ module.exports = (user) => {
     }
     const result = jwt.sign(
         payload,
-        process.env.JWT_SECRET || 'them secret them',
+        process.env.JWT_SECRET,
         options
     )
     return result

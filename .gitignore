@@ -79,6 +79,11 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+*.db3
+
 /notes.md
 lets.js
 lets2.js
+rev.js
+rev2.js
+junk/

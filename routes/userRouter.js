@@ -1,12 +1,39 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
-const dbPark = require('./parkModel')
-const dbUser = require('../user/userModel')
-const checkToken = require('../auth/checkToken')
+const { validateUserdetails, validateUser } = require('../middleware')
+const dbUser = require('../models/userModel')
 const generateToken = require('../auth/generateToken')
-const { validateUserdetails, validateParkDetails } = require('../middleware')
+const checkToken = require('../auth/checkToken')
 
 const router = express.Router()
+
+router.get('/:id', validateUser, (req, res) => {
+    res
+        .status(200)
+        .json(req.user)
+})
+
+router.delete('/:id', validateUser, (req, res) => {
+    const user = req.user
+
+    dbUser.removeUser(user.id)
+        .then(quantityDeleted => {
+            res
+                .status(200)
+                .json({
+                    message: `${user.name} has been removed`,
+                    quantityDeleted: quantityDeleted
+                })
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                    message: "Failure to delete user",
+                    error: error
+                })
+        })
+})
 
 router.post('/register', validateUserdetails, (req, res) => {
     let userDetails = req.body
@@ -50,51 +77,13 @@ router.post('/login', validateUserdetails, (req, res) => {
                     })
             }
         })
-        .catch()
-})
-
-router.get('/', (req, res) => {
-    dbPark.findAllParks()
-        .then(parks => {
-            if (parks.length) {
-                res
-                    .status(200)
-                    .json(parks)               
-            }
-            else {
-                res
-                    .status(404)
-                    .json({
-                        message: "There are no saved parks"
-                    })
-            }
-        })
         .catch(error => {
             res
                 .status(500)
                 .json({
-                    message: "Failure to get saved parks",
+                    message: "Login failure",
                     error: error
             })
-        })
-})
-
-
-router.post('/', validateParkDetails, checkToken, (req, res) => {
-    const parkDetails = req.body;
-    dbPark.addPark(parkDetails)
-        .then(newPark => {
-            res
-                .status(201)
-                .json(newPark)
-        })
-        .catch(error => {
-            res
-                .status(500)
-                .json({
-                    message: "Failure to add park",
-                    error: error
-                })
         })
 })
 
