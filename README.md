@@ -1,3 +1,7 @@
+Postman
+```https://documenter.getpostman.com/view/9566474/SW7c17HE```
+
+
 Heroku
 1. initial page https://lpp-server.herokuapp.com
 2. get all park GET https://lpp-server.herokuapp.com/api/parks
