@@ -27,15 +27,14 @@ async function updateUser(id, userDetails) {
     return updatedUser
 }
 
-function addUser(userDetails) {
-    return db('user')
-        .insert(userDetails, 'id')
-        .then(idArray => {
-            return db('user')
-                .where({ id: idArray[0] })
-                .select('id', 'username', 'name', 'email')
-                .first()
-        })
+async function addUser(userDetails) {
+    const [id] = await db('user')
+        .insert(userDetails, 'id');
+    const newUser = await db('user')
+        .where({ id })
+        .select('id', 'username', 'name', 'email')
+        .first()
+    return newUser
 }
 
 function findByUsernameOrEmail(userinfo) {
