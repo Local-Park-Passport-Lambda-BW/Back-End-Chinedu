@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     jwt
       .verify(
         token,
-        process.env.JWT_SECRET || 'me secret me',
+        process.env.JWT_SECRET,
         (err, decodedToken) => {
           if (err) {
             res

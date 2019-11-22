@@ -1,5 +1,6 @@
 const express = require('express')
-const dbPark = require('../park/parkModel')
+const dbPark = require('../models/parkModel')
+const dbRating = require('../models/ratingModel')
 const checkToken = require('../auth/checkToken')
 const {
     validateParkDetails,
@@ -8,10 +9,57 @@ const {
 
 const router = express.Router()
 
+router.post('/:id/facilities', checkToken, (req, res) => {
+    const facilityDetails = {
+        park_id: req.params.id,
+        facility_id: req.body.facility_id
+    }
+    dbPark.addFacilityToPark(facilityDetails)
+        .then(park => {
+            res
+                .status(201)
+                .json(park)
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                    message: "Failure adding the facility to the park",
+                    error: error
+                })
+        })
+})
+
+router.post('/:id/ratings', checkToken, (req, res) => {
+    const { subject: user_id } = req.decodedToken
+    const park_id = req.params.id
+    const { rating, comment } = req.body;
+    const newRating = { rating, comment, park_id, user_id };
+    dbRating.addRating(newRating)
+        .then(savedRating => {
+            res
+                .status(201)
+                .json(savedRating);
+            })
+        .catch(error => {
+            res
+                .status(500)
+                .json({
+                message: "Failure adding the rating",
+                error: error
+            });
+        });
+})
+
 router.get('/:id', validatePark, (req, res) => {
+    const park = req.park
+    const facilities = req.facilities
     res
         .status(200)
-        .json(req.park)
+        .json({
+            park,
+            facilities
+        })
 })
 
 router.put('/:id', validatePark, validateParkDetails, checkToken, (req, res) => {
